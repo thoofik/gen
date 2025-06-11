@@ -13,6 +13,16 @@
     <div class="container">
         <header>
             <h1 id="program-title">Program 1/9</h1>
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="search-input" placeholder="Search programs by name or number...">
+                    <button id="clear-search" class="clear-search" title="Clear search">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div id="search-results" class="search-results"></div>
+            </div>
         </header>
 
         <main>
@@ -48,8 +58,12 @@ ewr()</code></pre>
                 </div>
 
                 <div class="navigation">
-                    <button id="prev-btn" onclick="previousProgram()" disabled>Previous</button>
-                    <button id="next-btn" onclick="nextProgram()">Next</button>
+                    <button id="prev-btn" onclick="previousProgram()" disabled>
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    <button id="next-btn" onclick="nextProgram()">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
                 </div>
             </div>
         </main>
