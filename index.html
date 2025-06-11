@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenAI Programs</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
+    <!-- Add Font Awesome for the copy icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 id="program-title">Program 1/9</h1>
+        </header>
+
+        <main>
+            <div class="program-container">
+                <h2 id="program-name">Word Embeddings and Analogies</h2>
+                <p id="program-description">Demonstrates word embeddings using GloVe model to perform vector arithmetic and find word analogies.</p>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>Python Code</span>
+                        <button id="copy-btn" onclick="copyCode()" title="Copy code">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <pre><code class="language-python" id="program-code">from gensim.downloader import load
+# Load the pre-trained GloVe model (50 dimensions)
+print("Loading pre-trained GloVe model (50 dimensions)...")
+model = load("glove-wiki-gigaword-50")
+# Function to perform vector arithmetic and analyze relationships
+def ewr():
+    result = model.most_similar(positive=['king', 'woman'], negative=['man'], topn=1)
+    print("\nking - man + woman = ?", result[0][0])
+    print("similarity:", result[0][1])
+    result = model.most_similar(positive=['paris', 'italy'], negative=['france'], topn=1)
+    print("\nparis - france + italy = ?", result[0][0])
+    print("similarity:", result[0][1])
+    # Example 3: Find analogies for programming
+    result = model.most_similar(positive=['programming'], topn=5)
+    print("\nTop 5 words similar to 'programming':")
+    for word, similarity in result:
+        print(word, similarity)
+ewr()</code></pre>
+                </div>
+
+                <div class="navigation">
+                    <button id="prev-btn" onclick="previousProgram()" disabled>Previous</button>
+                    <button id="next-btn" onclick="nextProgram()">Next</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast notification for copy feedback -->
+    <div id="toast" class="toast">Code copied to clipboard!</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
