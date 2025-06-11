@@ -316,6 +316,111 @@ def chatbot():
 
 let currentProgram = 1;
 
+// Search functionality
+const searchInput = document.getElementById('search-input');
+const searchResults = document.getElementById('search-results');
+const clearSearchBtn = document.getElementById('clear-search');
+
+function highlightText(text, query) {
+    if (!query) return text;
+    const regex = new RegExp(`(${query})`, 'gi');
+    return text.replace(regex, '<span class="highlight">$1</span>');
+}
+
+function createSearchResultItem(programNumber, program, query) {
+    const div = document.createElement('div');
+    div.className = 'search-result-item';
+    div.innerHTML = `
+        <div class="search-result-number">${programNumber}</div>
+        <div class="search-result-content">
+            <div class="search-result-title">${highlightText(program.name, query)}</div>
+            <div class="search-result-description">${highlightText(program.description, query)}</div>
+        </div>
+    `;
+    div.addEventListener('click', () => {
+        currentProgram = programNumber;
+        updateProgram();
+        clearSearch();
+    });
+    return div;
+}
+
+function performSearch(query) {
+    searchResults.innerHTML = '';
+    if (!query) {
+        searchResults.classList.remove('visible');
+        clearSearchBtn.classList.remove('visible');
+        return;
+    }
+
+    clearSearchBtn.classList.add('visible');
+    const results = [];
+    
+    // Search by program number
+    if (/^\d+$/.test(query)) {
+        const num = parseInt(query);
+        if (num >= 1 && num <= 9 && programs[num]) {
+            results.push([num, programs[num]]);
+        }
+    }
+
+    // Search by program name and description
+    const searchQuery = query.toLowerCase();
+    Object.entries(programs).forEach(([number, program]) => {
+        if (results.some(r => r[0] === parseInt(number))) return;
+        
+        if (
+            program.name.toLowerCase().includes(searchQuery) ||
+            program.description.toLowerCase().includes(searchQuery)
+        ) {
+            results.push([parseInt(number), program]);
+        }
+    });
+
+    if (results.length > 0) {
+        results.forEach(([number, program]) => {
+            searchResults.appendChild(createSearchResultItem(number, program, query));
+        });
+        searchResults.classList.add('visible');
+    } else {
+        const noResults = document.createElement('div');
+        noResults.className = 'search-result-item';
+        noResults.innerHTML = `
+            <div class="search-result-content">
+                <div class="search-result-title">No results found</div>
+                <div class="search-result-description">Try a different search term</div>
+            </div>
+        `;
+        searchResults.appendChild(noResults);
+        searchResults.classList.add('visible');
+    }
+}
+
+function clearSearch() {
+    searchInput.value = '';
+    searchResults.innerHTML = '';
+    searchResults.classList.remove('visible');
+    clearSearchBtn.classList.remove('visible');
+}
+
+// Event listeners for search
+searchInput.addEventListener('input', (e) => performSearch(e.target.value.trim()));
+clearSearchBtn.addEventListener('click', clearSearch);
+
+// Close search results when clicking outside
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-container')) {
+        searchResults.classList.remove('visible');
+    }
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        clearSearch();
+    }
+});
+
 function updateProgram() {
     const program = programs[currentProgram];
     document.getElementById('program-title').textContent = `Program ${currentProgram}/9`;
@@ -366,7 +471,6 @@ async function copyCode() {
     }
 }
 
-// Toast notification
 function showToast() {
     const toast = document.getElementById('toast');
     toast.classList.add('show');
