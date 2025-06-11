@@ -310,7 +310,11 @@ def chatbot():
 
         results = search(query, ipc)
         print("\\n".join(results))
-        print("-" * 50)`
+        print("-" * 50)
+
+# Main program execution
+if __name__ == "__main__":
+    chatbot()`
     }
 };
 
